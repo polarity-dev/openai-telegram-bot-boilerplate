@@ -1,4 +1,3 @@
-const Sqlite = require("better-sqlite3")
 const OpenAI = require("openai")
 const { Telegraf } = require("telegraf")
 const { message } = require("telegraf/filters")
@@ -6,49 +5,29 @@ const { message } = require("telegraf/filters")
 const configs = require("./configs")
 const utils = require("./utils")
 
-const db = new Sqlite("data.db")
-utils.setupDatabase(db)
+/* ===================== SETUP ===================== */
+
+const data = utils.loadData()
+setInterval(() => utils.saveData(data), 5000)
 
 const bot = new Telegraf(configs.TELEGRAM_BOT_TOKEN)
-
 const openai = new OpenAI({
     apiKey: configs.OPENAI_API_KEY
 })
 
+/* ===================== BOT ===================== */
+
 bot.start(async (ctx) => {
-    await ctx.reply(`Hello! Your chat ID is ${ctx.chat.id}`)
+    const chatId = ctx.chat.id
+    await ctx.reply(`Hello! Your chat ID is ${chatId}`)
 })
 
 bot.on(message("text"), async (ctx) => {
-    const chatId = ctx.chat.id
-
-    // Setups the chat in the database if it doesn't exist
-    const { changes } = db.prepare(`
-        INSERT INTO "Chats" ("chatId", "nMessages")
-        VALUES (?, 0)
-        ON CONFLICT("chatId") DO NOTHING
-    `).run(chatId)
-
-    if (changes === 1) {
-        await ctx.reply("Chat setup successfully!")
-    }
-
-    // Increments the number of messages sent by the chat
-    db.prepare(`
-        UPDATE "Chats"
-        SET "nMessages" = "nMessages" + 1
-        WHERE "chatId" = ?
-    `).run(chatId)
-
-    // Get the number of messages sent by the chat
-    const { nMessages } = db.prepare(`
-        SELECT "nMessages"
-        FROM "Chats"
-        WHERE "chatId" = ?
-    `).get(chatId)
-
-    await ctx.reply(`You sent ${nMessages} messages`)
+    const message = ctx.message.text
+    await ctx.reply(`You said: ${message}`)
 })
+
+/* ===================== LAUNCH ===================== */
 
 bot.launch(() => {
     console.log('Bot is up and running')
@@ -57,5 +36,5 @@ bot.launch(() => {
 })
 
 // Enable graceful stop
-process.once('SIGINT', () => bot.stop('SIGINT'))
-process.once('SIGTERM', () => bot.stop('SIGTERM'))
+process.once("SIGINT", () => bot.stop("SIGINT"))
+process.once("SIGTERM", () => bot.stop("SIGTERM"))

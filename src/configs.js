@@ -2,7 +2,8 @@ require("dotenv/config")
 
 const {
     OPENAI_API_KEY,
-    TELEGRAM_BOT_TOKEN
+    TELEGRAM_BOT_TOKEN,
+    DATA_PATH = "data.json"
 } = process.env
 
 if (!OPENAI_API_KEY) {
@@ -15,5 +16,6 @@ if (!TELEGRAM_BOT_TOKEN) {
 
 module.exports = {
     OPENAI_API_KEY,
-    TELEGRAM_BOT_TOKEN
+    TELEGRAM_BOT_TOKEN,
+    DATA_PATH
 }

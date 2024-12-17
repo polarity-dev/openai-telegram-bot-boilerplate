@@ -1,30 +1,35 @@
-const OpenAI = require("openai")
-const configs = require("../src/configs")
+const { readFileSync, writeFileSync } = require("fs")
+const { DATA_PATH } = require("./configs")
 
-const openai = new OpenAI({
-    apiKey: configs.OPENAI_API_KEY
-})
-
-const functions = [{
-    definition: {
-        name: "magic_algorithm",
-        description: "A magic algorithm that manage a number with a secret algorithm.",
-        parameters: {
-            type: "object",
-            properties: {
-                n: {
-                    type: "number"
-                }
-            },
-        }
-    },
-    handler: (options) => {
-        const { n } = options
-        return n * 42
+const loadData = () => {
+    try {
+        const data = readFileSync(DATA_PATH)
+        return JSON.parse(data)
+    } catch (_) {
+        // Error loading data
+        return {}
     }
-}]
+}
 
-const completionWithTools = async (options) => {
+const saveData = (data) => {
+    writeFileSync(DATA_PATH, JSON.stringify(data, null, 2))
+}
+
+/* 
+    This function is a wrapper around the OpenAI Chat API 
+    that allows you to use custom functions in the assistant's 
+    responses.
+
+    The function takes an object with the following properties:
+    - openai: an instance of the OpenAI API
+    - messages: an array of messages that will be sent to the assistant
+    - model: the name of the model to use (default: "gpt-3.5-turbo")
+    - prompt: the initial prompt to send to the assistant
+    - functions: an array of custom functions that the assistant can call
+
+    The function returns a Promise that resolves with the assistant's response.
+*/
+const completionWithFunctions = async (options) => {
     const {
         openai,
         messages,
@@ -84,18 +89,13 @@ const completionWithTools = async (options) => {
         tools
     })
 
-    return secondCompletion.choices[0].message.content || ""
+    return secondCompletion.choices[0].message.content
 }
 
-const main = async () => {
-    const out = await completionWithTools({
-        prompt: "What is the result of the magic algorithm with a single unit?",
-        openai,
-        messages: [],
-        functions
-    })
+// Put here other utility functions that can be used in the whole project
 
-    console.log(out)
+module.exports = {
+    loadData,
+    saveData,
+    completionWithFunctions
 }
-
-main()

@@ -1,8 +1,6 @@
-const Sqlite = require("better-sqlite3")
 const OpenAI = require("openai")
-const configs = require("../src/configs")
+const configs = require("./configs")
 
-const db = new Sqlite("data.db")
 const openai = new OpenAI({
     apiKey: configs.OPENAI_API_KEY
 })

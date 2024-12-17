@@ -62,6 +62,3 @@ To set up and run the bot, follow these steps:
 - [OpenAI API Documentation](https://platform.openai.com/docs/overview)
 - [Telegraf package](https://www.npmjs.com/package/telegraf)
 - [Telegraf entities references](https://telegraf.js.org/)
-- [better-sqlite3 package](https://www.npmjs.com/package/better-sqlite3)
-- [sqlite sql reference](https://www.sqlite.org/lang.html)
-- [sqlite data types](https://www.sqlite.org/datatype3.html)
