@@ -1,12 +1,13 @@
-import Sqlite from "better-sqlite3"
-import OpenAI from "openai"
-import { Telegraf } from "telegraf"
-import { message } from "telegraf/filters"
-import configs from "./configs"
-import { setupDatabase } from "./utils"
+const Sqlite = require("better-sqlite3")
+const OpenAI = require("openai")
+const { Telegraf } = require("telegraf")
+const { message } = require("telegraf/filters")
+
+const configs = require("./configs")
+const utils = require("./utils")
 
 const db = new Sqlite("data.db")
-setupDatabase(db)
+utils.setupDatabase(db)
 
 const bot = new Telegraf(configs.TELEGRAM_BOT_TOKEN)
 
@@ -44,7 +45,7 @@ bot.on(message("text"), async (ctx) => {
         SELECT "nMessages"
         FROM "Chats"
         WHERE "chatId" = ?
-    `).get(chatId) as { nMessages: number }
+    `).get(chatId)
 
     await ctx.reply(`You sent ${nMessages} messages`)
 })

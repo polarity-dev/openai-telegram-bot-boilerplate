@@ -1,4 +1,6 @@
-const { 
+require("dotenv/config")
+
+const {
     OPENAI_API_KEY,
     TELEGRAM_BOT_TOKEN
 } = process.env
@@ -11,7 +13,7 @@ if (!TELEGRAM_BOT_TOKEN) {
     throw new Error('TELEGRAM_BOT_TOKEN is not defined')
 }
 
-export default {
+module.exports = {
     OPENAI_API_KEY,
     TELEGRAM_BOT_TOKEN
 }

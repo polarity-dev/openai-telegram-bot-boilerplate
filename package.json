@@ -2,14 +2,14 @@
   "name": "openai-telegram-bot-boilerplate",
   "version": "0.0.1",
   "description": "",
-  "main": "src/index.ts",
+  "main": "src/index.js",
   "engines": {
     "node": ">=20",
     "npm": ">=9"
   },
   "scripts": {
-    "start": "node --import tsx --import dotenv/config .",
-    "test": "node --import tsx --import dotenv/config test/index.ts",
+    "start": "node .",
+    "test": "node test/index.js",
     "dev": "nodemon"
   },
   "repository": {
@@ -24,12 +24,9 @@
   },
   "homepage": "https://github.com/polarity-dev/openai-telegram-bot-boilerplate#readme",
   "devDependencies": {
-    "@tsconfig/node22": "^22.0.0",
     "@types/better-sqlite3": "^7.6.12",
     "@types/node": "^22.10.2",
-    "nodemon": "^3.1.9",
-    "tsx": "^4.19.2",
-    "typescript": "^5.7.2"
+    "nodemon": "^3.1.9"
   },
   "dependencies": {
     "better-sqlite3": "^11.7.0",

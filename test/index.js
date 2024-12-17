@@ -1,6 +1,6 @@
-import Sqlite from "better-sqlite3"
-import OpenAI from "openai"
-import configs from "../src/configs"
+const Sqlite = require("better-sqlite3")
+const OpenAI = require("openai")
+const configs = require("../src/configs")
 
 const db = new Sqlite("data.db")
 const openai = new OpenAI({

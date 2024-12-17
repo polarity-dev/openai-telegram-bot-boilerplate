@@ -1,17 +1,11 @@
-import OpenAI from "openai"
-import configs from "../src/configs"
-import { ChatCompletionMessageParam, ChatCompletionTool } from "openai/resources/index.mjs"
-
-type SourceFunction = {
-    definition: ChatCompletionTool["function"],
-    handler: any
-}
+const OpenAI = require("openai")
+const configs = require("../src/configs")
 
 const openai = new OpenAI({
     apiKey: configs.OPENAI_API_KEY
 })
 
-const functions: SourceFunction[] = [{
+const functions = [{
     definition: {
         name: "magic_algorithm",
         description: "A magic algorithm that manage a number with a secret algorithm.",
@@ -24,30 +18,24 @@ const functions: SourceFunction[] = [{
             },
         }
     },
-    handler: (options: { n: number }) => {
+    handler: (options) => {
         const { n } = options
         return n * 42
     }
 }]
 
-const completionWithTools = async (options: {
-    prompt: string,
-    openai: OpenAI,
-    messages: ChatCompletionMessageParam[],
-    functions: SourceFunction[],
-    model?: string
-}): Promise<string> => {
-    const tools = functions.map(({ definition }) => ({
-        type: "function" as const,
-        function: definition
-    }))
-
+const completionWithTools = async (options) => {
     const {
         openai,
         messages,
         model = "gpt-3.5-turbo",
         prompt
     } = options
+
+    const tools = functions.map(({ definition }) => ({
+        type: "function",
+        function: definition
+    }))
 
     // Add the prompt to the list of messages
     messages.push({
