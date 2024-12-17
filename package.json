@@ -9,6 +9,7 @@
   },
   "scripts": {
     "start": "node --import tsx --import dotenv/config .",
+    "test": "node --import tsx --import dotenv/config test/index.ts",
     "dev": "nodemon"
   },
   "repository": {
