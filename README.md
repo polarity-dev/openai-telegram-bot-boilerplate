@@ -41,7 +41,7 @@ To set up and run the bot, follow these steps:
 4. Copy the .env.example file to a new file named `.env`.
 
     ```bash
-    cp .env.example .env
+    cp .env.sample .env
     ```
 
 5. Open the `.env` file and replace the placeholders with your OpenAI API key and Telegram bot token:
