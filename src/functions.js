@@ -1,19 +1,26 @@
 const functions = [{
     definition: {
-        name: "magic_algorithm",
-        description: "A magic algorithm that manage a number with a secret algorithm.",
+        name: "add_alias",
+        description: "A function that adds an alias to a user",
         parameters: {
             type: "object",
             properties: {
-                n: {
+                alias: {
+                    type: "string"
+                },
+                chatId: {
                     type: "number"
-                }
+                },
+                userId: {
+                    type: "string"
+                },
             },
         }
     },
     handler: (options) => {
-        const { n } = options
-        return n * 42
+        const { alias, chatId, userId } = options
+        console.log(`Adding alias ${alias} to user ${userId} in chat ${chatId}`)
+        return "ok"
     }
 }]
 

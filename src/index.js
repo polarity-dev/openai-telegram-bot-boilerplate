@@ -4,6 +4,7 @@ const { message } = require("telegraf/filters")
 
 const configs = require("./configs")
 const utils = require("./utils")
+const { functions } = require("./functions")
 
 /* ===================== SETUP ===================== */
 
@@ -24,7 +25,32 @@ bot.start(async (ctx) => {
 
 bot.on(message("text"), async (ctx) => {
     const message = ctx.message.text
-    await ctx.reply(`You said: ${message}`)
+    const chatId = ctx.chat.id
+
+    const users = [{
+        id: "Alessandro",
+        aliases: ["Alessandro", "Sandro"]
+    }]
+
+    const response = await utils.completionWithFunctions({
+        openai,
+        prompt: message,
+        functions,
+        messages: [{
+            role: "system",
+            content: `
+                =========================================
+                La chat ID è ${ chatId }
+                ========================================
+                Questo è il contesto sugli utenti:
+                ${ JSON.stringify(users) }
+                ========================================
+        `
+        
+        }]
+    })
+
+    await ctx.reply(response)
 })
 
 /* ===================== LAUNCH ===================== */

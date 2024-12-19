@@ -83,10 +83,17 @@ const completionWithFunctions = async (options) => {
             })
         }
 
+        console.log(messages)
+
         const secondCompletion = await openai.chat.completions.create({
             model,
             messages,
+            tools
         })
+
+        console.log("post")
+
+        console.dir(secondCompletion, { depth: null })
 
         const secondMessage = secondCompletion.choices[0].message
 
